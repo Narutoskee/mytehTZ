@@ -20,3 +20,18 @@ $m = [
 ];
 //check this out
 debugMe($m);
+// i make function print to monitor array $m in table style
+function drawArr($arr){
+    echo "<table border='1'>";
+    foreach($arr as $mass => $items):
+        echo "<tr>";
+        foreach($items as $key => $value):
+            echo "<td style='padding: 10px;'>$value</td>";
+        endforeach;
+        echo "</tr>";
+    endforeach;
+    echo "</table>";
+}
+echo "Array before<br>";
+drawArr($m);
+
