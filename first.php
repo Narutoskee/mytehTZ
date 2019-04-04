@@ -42,8 +42,10 @@ function drawArr($arr)
 {
     echo "<table border='1'>";
     foreach ($arr as $mass => $items):
+        //first line
         echo "<tr>";
         foreach ($items as $key => $value):
+            //val of massive
             echo "<td style='padding: 10px;'>$value</td>";
         endforeach;
         echo "</tr>";
@@ -57,25 +59,27 @@ echo "</div>";
 echo "<div>";
 function sortArray($arr)
 {
-    $rowData = [];
-    foreach ($arr as $mass) {
-        $sorted = [];
-        foreach ($mass as $cell) {
-            $sorted[] = $cell;
-            sort($sorted);
-        }
-        $rowData[] = $sorted;
-    }
+    $rowData = [];//make new arr before cicle
+    foreach ($arr as $mass):
+        $sorted = [];//make new arr after first cicle
+        foreach ($mass as $cell):
+            $sorted[] = $cell; //drop up val to new sort array
+            sort($sorted);// function sort val  new array
+        endforeach;
+        $rowData[] = $sorted; // pass on
+    endforeach;
+    //and collect our new array
     echo '<table border="1">';
-    foreach ($rowData as $row => $tr) {
+    foreach ($rowData as $row => $tr):
         echo '<tr>';
-        foreach ($tr as $td)
+        foreach ($tr as $td):
             echo '<td style=\'padding: 10px;\'>' . $td . '</td>';
+        endforeach;
         echo '</tr>';
-    }
+    endforeach;
     echo '</table>';
 }
-
+//fast and simple
 echo "Array after Sort<br>";
 sortArray($m);
 
