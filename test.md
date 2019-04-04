@@ -36,3 +36,4 @@ account.id = invoice.account_id
 Результаты тестового задания прислать в виде ссылок на google docs или github (задания 1-2) и db-fiddle.com (задание 3)
 Billing.id akan dibuat Website/Aplikasi/Startup..
 billing.id
+https://www.db-fiddle.com/f/fxcYL7WXNuNozGBtqNW2v2/0
