@@ -6,7 +6,7 @@
  * Time: 15:59
  */
 //make analog of var_dump
-function debug($var)
+function debugMe($var)
 {
     echo "<pre>";
     var_dump($var);
@@ -18,3 +18,5 @@ $m = [
     [8, 3, 2],
     [2, 9, 5]
 ];
+//check this out
+debugMe($m);
