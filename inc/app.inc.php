@@ -93,7 +93,46 @@ function sortArray($arr)
     endforeach;
     echo '</table>';
 }
-
+function parseJyvUa($dirName,$pages,$url,$url_short=""){
+    $start = microtime(true); //начало измерения
+    $mc = dirname(__FILE__) . "/$dirName/";
+    echo(!file_exists($mc) ?
+        (!mkdir($mc, 0777, true) ? 'Failed to create folders...' : 'Succesfully created nested directories...') : 'maybe allready done');
+    // massive for properties
+    $divContents = [];
+    $count = 1;
+    for ( $page = 1; $page <= $pages; $page++ ) {
+        $html = file_get_html_curl($url);
+        if (count($html->find('a.product_link'))) {
+            foreach ($html->find('a.product_link') as $level) {
+                $html2 = file_get_html_curl($url_short . $level->href);
+                foreach ($html2->find('.jshop_list_product .product .name a') as $step2) {
+                    $product = [];
+                    $product['url'] = $url_short . $step2->href;
+                    $html3 = file_get_html_curl($product['url']);
+                    $product['name'] = trim($html3->find('h1', 0)->plaintext);
+                    $product['color'] = $html3->find('span#block_attr_sel_8', 0) ? trim($html3->find('span#block_attr_sel_8', 0)->plaintext) : "";
+                    $product['size'] = trim($html3->find('span#block_attr_sel_7', 0)->plaintext) ?: "";
+                    $product['disc'] = trim($html3->find('div.attr_description', 0)->plaintext) ?: "";
+                    $divContents[] = $product;
+                    $count++;
+                    usleep(600000); // 0.5 сек
+                    print_r($product);
+                    echo str_repeat('&nbsp;', 100) . '<br><hr><br>';
+                    flush();
+                    $html3->clear();
+                }
+                $html2->clear();
+            }
+        }
+        $html->clear();
+    }
+    $fp = fopen( 'juventa.csv', 'w' );
+    foreach ( $divContents as $line ) {
+        fputcsv( $fp, $line );
+    }
+    fclose( $fp );
+}
 function drawArrA($arr){
 
     echo "<table class='table'>";

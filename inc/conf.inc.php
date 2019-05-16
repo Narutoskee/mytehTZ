@@ -7,3 +7,4 @@
     // Прочие
     require_once "app.inc.php";
     include "header.inc.php";
+    include "simple_html_dom.php";
