@@ -11,10 +11,54 @@ function debugMe($var)
     var_dump($var);
     echo "</pre>";
 }
+function drawMenu($menu,$vertical=true){
+    if(!is_array($menu))
+        return false;
+    $style="";
+    if (!$vertical):
+        $style=" class='d-inline mr-1'";
+    endif;
+    echo "<ul>";
+    foreach ($menu as $item){
+        echo "<li$style>";
+        echo "<a href='{$item['href']}'>{$item['title']}</a>";
+        echo "</li>";
+    }
+    echo "<ul>";
+    return true;
+}
+function myError($no,$msg,$file,$line){
+    $errDateTime =date("d-m-Y H:i:s");
+    $str = "[$errDateTime] - $msg in $file:$line\n";
+    switch ($no):
+        case E_USER_ERROR:
+        case E_USER_WARNING:
+        case E_USER_NOTICE:
+            echo $msg;
+    endswitch;
+    error_log($str,3,"error.log");
+}
+function drawHello (){
+    /* Приветсвие*/
+    $hour =(int)strftime('%H');
+    if($hour>0 and $hour <6):
+        $welcome ="Доброй ночи";
+    elseif ($hour>=6 and $hour<12):
+        $welcome ="Доброе утро";
+    elseif ($hour>=12 and $hour<18):
+        $welcome ="Добрый день";
+    elseif ($hour>=18 and $hour<23):
+        $welcome ="Добрый вечер";
+    else:
+        $welcome ="Доброй ночи";
+    endif;
+    return $welcome;
+}
+
 //draw arr first task 1
 function drawArr($arr)
 {
-    echo "<table border='1'>";
+    echo "<table class='table'>";
     foreach ($arr as $mass => $items):
         //first line
         echo "<tr>";
@@ -39,7 +83,7 @@ function sortArray($arr)
         $rowData[] = $sorted; // pass on
     endforeach;
     //and collect our new array
-    echo '<table border="1">';
+    echo '<table class="table">';
     foreach ($rowData as $row => $tr):
         echo '<tr>';
         foreach ($tr as $td):
@@ -52,7 +96,7 @@ function sortArray($arr)
 
 function drawArrA($arr){
 
-    echo "<table border='1'>";
+    echo "<table class='table'>";
     foreach($arr as $arrLine => $massiv):
         $firstLeter= substr($massiv['type'],0,1);
         $firstTwo = substr($massiv['type'],0,2);
@@ -89,7 +133,7 @@ function sortMe($a, $b){
 function sortArrayA($arr){
     uasort($arr, 'sortMe');
 
-    echo '<table border="1">';
+    echo '<table class="table">';
     foreach ($arr as $row => $tr):
         $firstLeter= substr($tr['type'],0,1);
         $firstTwo = substr($tr['type'],0,2);
