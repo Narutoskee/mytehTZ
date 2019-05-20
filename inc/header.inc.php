@@ -17,4 +17,8 @@
             $title = 'Задача3';
             $header = 'Третья задача';
             break;
+        case 'task4':
+            $title = 'Задача4';
+            $header = 'Четвертая задача';
+            break;
    endswitch;

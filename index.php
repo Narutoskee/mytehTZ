@@ -43,6 +43,9 @@ require_once "inc/conf.inc.php";
                 case 'task3':
                     include 'inc/task3.inc.php';
                     break;
+                case 'task4':
+                    include 'inc/task4.inc.php';
+                    break;
                 default:
                     include 'inc/frontpage.inc.php';
             }

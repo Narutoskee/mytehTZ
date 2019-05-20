@@ -7,6 +7,7 @@ $menuMain=[
     ['title'=>'Задание 1','href'=>'index.php?id=task1'],
     ['title'=>'Задание 2','href'=>'index.php?id=task2'],
     ['title'=>'Задание 3','href'=>'index.php?id=task3'],
+    ['title'=>'Задание 4','href'=>'index.php?id=task4'],
 
 ];
 if (!drawMenu($menuMain)):

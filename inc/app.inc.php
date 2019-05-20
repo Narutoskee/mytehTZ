@@ -93,8 +93,7 @@ function sortArray($arr)
     endforeach;
     echo '</table>';
 }
-function parseJyvUa($dirName,$pages,$url,$url_short=""){
-    $start = microtime(true); //начало измерения
+function parseJyvUa($dirName,$pages,$url,$urlShort){
     $mc = dirname(__FILE__) . "/$dirName/";
     echo(!file_exists($mc) ?
         (!mkdir($mc, 0777, true) ? 'Failed to create folders...' : 'Succesfully created nested directories...') : 'maybe allready done');
@@ -105,10 +104,10 @@ function parseJyvUa($dirName,$pages,$url,$url_short=""){
         $html = file_get_html_curl($url);
         if (count($html->find('a.product_link'))) {
             foreach ($html->find('a.product_link') as $level) {
-                $html2 = file_get_html_curl($url_short . $level->href);
+                $html2 = file_get_html_curl($urlShort . $level->href);
                 foreach ($html2->find('.jshop_list_product .product .name a') as $step2) {
                     $product = [];
-                    $product['url'] = $url_short . $step2->href;
+                    $product['url'] = $urlShort . $step2->href;
                     $html3 = file_get_html_curl($product['url']);
                     $product['name'] = trim($html3->find('h1', 0)->plaintext);
                     $product['color'] = $html3->find('span#block_attr_sel_8', 0) ? trim($html3->find('span#block_attr_sel_8', 0)->plaintext) : "";
@@ -127,7 +126,7 @@ function parseJyvUa($dirName,$pages,$url,$url_short=""){
         }
         $html->clear();
     }
-    $fp = fopen( 'juventa.csv', 'w' );
+    $fp = fopen( $dirName.'csv', 'w' );
     foreach ( $divContents as $line ) {
         fputcsv( $fp, $line );
     }
@@ -197,4 +196,55 @@ function sortArrayA($arr){
     endforeach;
     echo '</table>';
 
+}
+
+function getTik($urlFrom,$url){
+    $ch = curl_init();
+    curl_setopt ($ch, CURLOPT_URL, $urlFrom);
+    curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch , CURLOPT_COOKIEJAR, 'cookies.txt');
+    curl_setopt($ch , CURLOPT_COOKIEFILE, 'cookies.txt');
+    $html = curl_exec ($ch);
+    curl_close ($ch);
+    if (preg_match('(name="sessionId" value="([^"]+)")si', $html, $m)) {
+        $sessionId = $m[1];
+        $data = [
+            'textBoxPartida' => 'Abrantes',
+            'textBoxChegada' => 'Aguas Santas - Palmilheira',
+            'textBoxDataIda' => '2019-02-28',
+            'textBoxDataVolta' => '2019-03-01',
+            'departDate' => '26 November, 2018',
+            'returnDate' => '27 November, 2018',
+            'radioButtonClasse' => '1',
+            'passengers' => '1',
+            'numTicket' => '1',
+            'language' => 'en',
+            'sessionId' => $sessionId,
+            'corporate' => '0'
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch , CURLOPT_COOKIEJAR, 'cookies.txt');
+        curl_setopt($ch , CURLOPT_COOKIEFILE, 'cookies.txt');
+        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+        curl_setopt($ch , CURLOPT_HEADER, 0);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        echo $result;
+
+    } else {
+        echo 'sessionId not found';
+    }
+}
+
+function clearInt($data)
+{
+    return (int)$data;
+}
+function clearStr($data){
+    return trim(strip_tags($data));
 }
